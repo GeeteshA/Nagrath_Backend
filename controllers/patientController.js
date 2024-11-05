@@ -56,7 +56,7 @@ const createPatient = async (req, res) => {
     await newPatient.save(); // Save to generate _id
 
     // Generate QR code for patient URL
-    const qrData = `${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/patients/${newPatient._id}`;
+    const qrData = `${process.env.CLIENT_ORIGIN || 'https://nagrath-frontend.vercel.app'}/patients/${newPatient._id}`;
     try {
       const qrCode = await QRCode.toDataURL(qrData);
       newPatient.qrCode = qrCode;
@@ -255,7 +255,7 @@ const getPatientQRCode = async (req, res) => {
     }
 
     // Define the public patient URL to encode in the QR code
-    const publicUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/public-patient/${patientId}`;
+    const publicUrl = `${process.env.FRONTEND_URL || 'https://nagrath-frontend.vercel.app'}/public-patient/${patientId}`;
 
     // Generate the QR code with the public URL
     const qrCodeDataUrl = await QRCode.toDataURL(publicUrl);
