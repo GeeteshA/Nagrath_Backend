@@ -72,25 +72,31 @@ const createAdmin = async (req, res) => {
 // @access  Public
 const loginAdmin = async (req, res) => {
     const { email, password } = req.body;
-
+  
     try {
-        const user = await User.findOne({ email });
-
-        if (user && (await user.matchPassword(password))) {
-            res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                token: generateToken(user._id),
-            });
-        } else {
-            res.status(401).json({ message: 'Invalid email or password' });
-        }
+      const user = await User.findOne({ email });
+      console.log("User found:", user); // Verify if the user exists
+  
+      if (user && (await user.matchPassword(password))) {
+        console.log("Password matched"); // Password comparison succeeded
+        res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: generateToken(user._id),
+        });
+      } else {
+        console.log("Invalid email or password"); // Incorrect credentials
+        res.status(401).json({ message: 'Invalid email or password' });
+      }
     } catch (error) {
-        res.status(500).json({ message: 'Error logging in', error: error.message });
+      console.error("Error during login:", error); // Log any unexpected error
+      res.status(500).json({ message: 'Error logging in', error: error.message });
     }
-};
+  };
+  
+  
 
 // @desc    Get all admins (Super Admin only)
 // @route   GET /api/auth/admins

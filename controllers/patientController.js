@@ -56,7 +56,7 @@ const createPatient = async (req, res) => {
     await newPatient.save(); // Save to generate _id
 
     // Generate QR code for patient URL
-    const qrData = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/patients/${newPatient._id}`;
+    const qrData = `${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/patients/${newPatient._id}`;
     try {
       const qrCode = await QRCode.toDataURL(qrData);
       newPatient.qrCode = qrCode;
