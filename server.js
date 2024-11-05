@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-const Admin = require('./models/adminModel'); // Import the Admin model
 const User = require('./models/userModel'); // Import the User model
 
 // environment variables
@@ -20,11 +19,25 @@ const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-// Middleware
+// Define allowed origins
+const allowedOrigins = [
+  'http://localhost:5173',                    // Local development
+  'https://nagrath-frontend.vercel.app'       // Vercel frontend URL
+];
+
+// Configure CORS with dynamic origin checking
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173', 
-    credentials: true,
-  }));
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
+
 app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
