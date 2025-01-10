@@ -1,4 +1,4 @@
-const Patient = require('../models/patientModel');   
+const Patient = require('../models/patientModel');
 const multer = require('multer');
 const QRCode = require('qrcode');
 
@@ -17,61 +17,6 @@ const multiUpload = upload.fields([
 
 
 // Get all Patients for the logged-in admin
-// Updated `createPatient` to handle optional photo and documents
-// const createPatient = async (req, res) => {
-//   try {
-//     // Destructure basic patient information from req.body
-//     const {
-//       name, age, mobile, addressLine1, address, pincode, district, country,
-//       gender, dateOfBirth, aadharNumber, city, state, hemoglobin, bloodGroup,
-//       bloodPressure, heartRate, weight, fastingBloodSugar, cbc, urinalysis,
-//       serumElectrolytes, lipidProfile, tsh, sgpt, platelet, hiv, chronicDisease,
-//       medicalHistory
-//     } = req.body;
-
-//     // Handle single photo file
-//     const photo = req.files && req.files['photo'] && req.files['photo'][0] ? {
-//       data: req.files['photo'][0].buffer,
-//       contentType: req.files['photo'][0].mimetype
-//     } : null;
-
-//     // Handle multiple document files, if uploaded
-//     const documentFiles = req.files && req.files['documentFile']
-//       ? req.files['documentFile'].map(doc => ({
-//           data: doc.buffer,
-//           contentType: doc.mimetype
-//         }))
-//       : []; // Default to empty array if no documents are uploaded
-
-//     // Create and save a new patient instance
-//     let newPatient = new Patient({
-//       admin: req.user._id,
-//       name, age, mobile, addressLine1, address, pincode, district, country,
-//       gender, dateOfBirth, aadharNumber, city, state, photo, hemoglobin,
-//       bloodGroup, bloodPressure, heartRate, weight, fastingBloodSugar, cbc,
-//       urinalysis, serumElectrolytes, lipidProfile, tsh, sgpt, platelet, hiv,
-//       chronicDisease, medicalHistory, documentFile: documentFiles
-//     });
-
-//     await newPatient.save(); // Save to generate _id
-
-//     // Generate QR code for patient URL
-//     const qrData = `${process.env.CLIENT_ORIGIN || 'https://nagrath-frontend.vercel.app'}/patients/${newPatient._id}`;
-//     try {
-//       const qrCode = await QRCode.toDataURL(qrData);
-//       newPatient.qrCode = qrCode;
-//     } catch (qrError) {
-//       console.error('QR Code generation failed:', qrError);
-//       return res.status(500).json({ message: 'QR code generation failed' });
-//     }
-
-//     await newPatient.save(); // Save again with QR code
-//     res.status(201).json(newPatient);
-//   } catch (error) {
-//     console.error('Error creating patient with QR code:', error);
-//     res.status(400).json({ message: 'Invalid patient data', error: error.message });
-//   }
-// };
 const createPatient = async (req, res) => {
   try {
     // Destructure basic patient information from req.body
@@ -130,8 +75,6 @@ const createPatient = async (req, res) => {
 };
 
 
-
-
 const getPatients = async (req, res) => {
   try {
     const patients = await Patient.find();
@@ -187,11 +130,6 @@ const getPatientById = async (req, res) => {
   }
 };
 
-
-
-
-// Update `updatePatient` to handle multiple document files and QR code regeneration if needed
-// Update patient details, including file uploads and QR code regeneration
 const updatePatient = async (req, res) => {
   try {
     const { id } = req.params;
@@ -285,23 +223,6 @@ const getPatientPhoto = async (req, res) => {
     res.status(500).json({ message: 'Error fetching image' });
   }
 };
-
-// Fetch Patient QR Code
-// const getPatientQRCode = async (req, res) => {
-//   try {
-//     const patient = await Patient.findById(req.params.id);
-
-//     if (!patient || !patient.qrCode) {
-//       return res.status(404).json({ message: 'QR code not found' });
-//     }
-
-//     res.json({ qrCode: patient.qrCode });
-//   } catch (error) {
-//     console.error('Error fetching QR code:', error);
-//     res.status(500).json({ message: 'Error fetching QR code', error: error.message });
-//   }
-// };
-// Fetch Patient QR Code with Public URL
 const getPatientQRCode = async (req, res) => {
   try {
     const patientId = req.params.id;
@@ -338,7 +259,7 @@ const getPublicPatientById = async (req, res) => {
     res.status(500).json({ message: 'Error fetching patient details', error });
   }
 };
-  
+
 
 
 // Updated `multiUpload` for file handling in createPatient and updatePatient
