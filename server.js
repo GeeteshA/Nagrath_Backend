@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Define allowed origins
 const allowedOrigins = [
-  'http://localhost:5173',                    // Local development
+ // 'http://localhost:5173',                    // Local development
   'https://nagrath-frontend.vercel.app'       // Vercel frontend URL
 ];
 
@@ -86,4 +86,3 @@ const PORT = process.env.PORT || 5000;
 
 // Start the server
 app.listen(PORT, console.log(`Server running in http://${process.env.NODE_ENV}:${PORT}`));
-
