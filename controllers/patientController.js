@@ -24,9 +24,9 @@ const createPatient = async (req, res) => {
       name, age, mobile, addressLine1, address, pincode, district, country,
       gender, dateOfBirth, aadharNumber, city, state, hemoglobin, bloodGroup,
       bloodPressure, heartRate, calcium, fastingBloodSugar,
-      bloodCbc, urineTest, lipidProfile, tshTest,
+      bloodCbc, urineTest, lipidProfile, tshTest
       // Medivcal history and other
-      medicalHistory
+      //medicalHistory
     } = req.body;
 
     // Handle single photo file
@@ -51,7 +51,8 @@ const createPatient = async (req, res) => {
       bloodGroup, bloodPressure, heartRate, fastingBloodSugar, calcium,
       bloodCbc, urineTest, lipidProfile, tshTest,
       //Medical and other
-      medicalHistory, documentFile: documentFiles
+     // medicalHistory,
+      documentFile: documentFiles
     });
 
     await newPatient.save(); // Save to generate _id
