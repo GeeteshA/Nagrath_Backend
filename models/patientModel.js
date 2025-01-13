@@ -326,23 +326,23 @@ const patientSchema = mongoose.Schema(
                 options: { type: [String], default: ['Non-Diabetic: 4-6', 'Excellent Control: 6-7', 'Fair to Good Control: 7-8', 'Unsatisfactory Control: 8-10', 'Poor Control: >10'] }
             },
         },
-        medicalHistory: {
-            previousCondition: {
-                value: { type: String, required: true },
-                unit: { type: String, required: true },
-                range: { type: String, required: true },
-            },
-            vaccination: {
-                value: { type: String, required: true },
-                unit: { type: String, required: true },
-                range: { type: String, required: true },
-            },
-            currentMedication: {
-                value: { type: String, required: true },
-                unit: { type: String, required: true },
-                range: { type: String, required: true },
-            },
-        },
+        // medicalHistory: {
+        //     previousCondition: {
+        //         value: { type: String, required: true },
+        //         unit: { type: String, required: true },
+        //         range: { type: String, required: true },
+        //     },
+        //     vaccination: {
+        //         value: { type: String, required: true },
+        //         unit: { type: String, required: true },
+        //         range: { type: String, required: true },
+        //     },
+        //     currentMedication: {
+        //         value: { type: String, required: true },
+        //         unit: { type: String, required: true },
+        //         range: { type: String, required: true },
+        //     },
+        // },
         // Update documentFile to support multiple files as an array of objects
         documentFile: [
             {
@@ -360,6 +360,13 @@ const patientSchema = mongoose.Schema(
     }
 );
 module.exports = mongoose.model('Patient', patientSchema);
+
+
+
+
+
+
+
 
 
 
