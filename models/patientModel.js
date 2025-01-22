@@ -57,12 +57,13 @@ const patientSchema = mongoose.Schema(
         aadharNumber: {
             type: String,
             required: true,
-            unique: true, 
+            unique: true,
             index: true,
         },
+
         photo: {
-            data: Buffer,
-            contentType: String,
+            type: String, // Store the file path as a string
+            default: null // Allow null if no photo is uploaded
         },
         // Additional medical and personal data
         hemoglobin: {
@@ -82,7 +83,7 @@ const patientSchema = mongoose.Schema(
         },
         fastingBloodSugar: {
             value: { type: String },
-            range: { type: String, default: '70-100'},
+            range: { type: String, default: '70-100' },
             unit: { type: String, default: 'mg/dL' }
         },
         calcium: {
@@ -134,22 +135,22 @@ const patientSchema = mongoose.Schema(
         urineTest: {
             colour: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: 'Pale Yellow' }
             },
             appearance: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: 'Clear' }
             },
             reaction: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: '6.0-8.5' }
             },
             specificGravity: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: '1.005-1.030' }
             },
             pusCells: {
@@ -178,7 +179,7 @@ const patientSchema = mongoose.Schema(
                 range: { type: String, default: 'Absent' }
             },
             crystals: {
-                value: { type: String,  },
+                value: { type: String, },
                 unit: { type: String, default: '/HPF' },
                 range: { type: String, default: 'Absent' }
             },
@@ -194,7 +195,7 @@ const patientSchema = mongoose.Schema(
             },
             esr: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String },
                 options: { type: [String], default: ['1-13 male', '0-20 women'] }
             },
@@ -204,45 +205,46 @@ const patientSchema = mongoose.Schema(
         lipidProfile: {
             cholesterolTotal: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
-                options: [{ type: String }],
+                options: { type: [String], default: ['Desirable: Up to 200', 'Borderline High: 200-239', 'High: >250'] },
             },
             triglycerides: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
-                options: [{ type: String }],
+                options: { type: [String], default: ['Normal: <150', 'Borderline: 150-199', 'High: 200-499', 'Very High: >500'] },
             },
             hdlCholesterol: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
-                range: { type: String },
+                options: { type: [String], default: ['Male: 35-70', 'Female: 35-90'] },
             },
             ldlCholesterol: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
-                options: [{ type: String }],
+                options: { type: [String], default: ['Low Risk: <100', 'Normal Risk: 130-160', 'High Risk: >160'] },
             },
             vldlCholesterol: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
             },
             cholHdlCholRatio: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
             },
             ldlHdlCholRatio: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: 'mg/dL' },
                 range: { type: String },
             },
         },
-        
+
+
         // TSH Test
         tshTest: {
             triiodothyronine: {
@@ -307,17 +309,17 @@ const patientSchema = mongoose.Schema(
             },
             pdw: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: '15-17' }
             },
             hivFirst: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: 'Non – Reactive' }
             },
             hivSecond: {
                 value: { type: String },
-                unit: { type: String },
+                unit: { type: String, default: '-' },
                 range: { type: String, default: 'Non – Reactive' }
             },
             HBA1C: {
@@ -326,29 +328,11 @@ const patientSchema = mongoose.Schema(
                 options: { type: [String], default: ['Non-Diabetic: 4-6', 'Excellent Control: 6-7', 'Fair to Good Control: 7-8', 'Unsatisfactory Control: 8-10', 'Poor Control: >10'] }
             },
         },
-        // medicalHistory: {
-        //     previousCondition: {
-        //         value: { type: String, required: true },
-        //         unit: { type: String, required: true },
-        //         range: { type: String, required: true },
-        //     },
-        //     vaccination: {
-        //         value: { type: String, required: true },
-        //         unit: { type: String, required: true },
-        //         range: { type: String, required: true },
-        //     },
-        //     currentMedication: {
-        //         value: { type: String, required: true },
-        //         unit: { type: String, required: true },
-        //         range: { type: String, required: true },
-        //     },
-        // },
-        // Update documentFile to support multiple files as an array of objects
+
         documentFile: [
             {
-                data: Buffer, // Store file data
-                contentType: String, // Store MIME type of the file
-            },
+                type: String
+            }
         ],
         qrCode: {
             type: String,
@@ -360,13 +344,6 @@ const patientSchema = mongoose.Schema(
     }
 );
 module.exports = mongoose.model('Patient', patientSchema);
-
-
-
-
-
-
-
 
 
 
