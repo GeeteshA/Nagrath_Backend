@@ -24,9 +24,7 @@ const createPatient = async (req, res) => {
       name, age, mobile, addressLine1, address, pincode, district, country,
       gender, dateOfBirth, aadharNumber, city, state, hemoglobin, bloodGroup,
       bloodPressure, heartRate, calcium, fastingBloodSugar,
-      bloodCbc, urineTest, lipidProfile, tshTest
-      // Medivcal history and other
-      //medicalHistory
+      bloodCbc, urineTest, lipidProfile, tshTest,
     } = req.body;
 
     // Handle single photo file
@@ -44,14 +42,12 @@ const createPatient = async (req, res) => {
       : []; // Default to empty array if no documents are uploaded
 
     // Create and save a new patient instance
-    let newPatient = new Patient({
+    const newPatient = new Patient({
       admin: req.user._id,
       name, age, mobile, addressLine1, address, pincode, district, country,
       gender, dateOfBirth, aadharNumber, city, state, photo, hemoglobin,
       bloodGroup, bloodPressure, heartRate, fastingBloodSugar, calcium,
       bloodCbc, urineTest, lipidProfile, tshTest,
-      //Medical and other
-     // medicalHistory,
       documentFile: documentFiles
     });
 
